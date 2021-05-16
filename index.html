@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <script type="application/javascript">
+        var x = 0;
+        var y = 595;
+        var requestId = 0;
+        var stopAnimation = false;
+
+        function start() {
+            var velocity = document.getElementById('velocity').value;
+            var angle = document.getElementById('angle').value;
+            stopAnimation = false;
+            draw();
+        }
+
+        function reset() {
+            x = 0;
+            y = 595;
+            var canvas = document.getElementById('canvas');
+            var ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            window.cancelAnimationFrame(requestId);
+            stopAnimation = true;
+        }
+
+
+
+        function draw() {
+            var canvas = document.getElementById('canvas');
+            var ctx = canvas.getContext('2d');
+            x = x + 5;
+            y = y - 5;
+            document.getElementById("xAxis").innerHTML ="Distance in X axis is " + x;
+            document.getElementById("yAxis").innerHTML = "Distance in X axis is " + y;
+            if ((x > 1495) || (y < 0)) {
+                window.cancelAnimationFrame(requestId);
+                stopAnimation = true;
+                console.log("should have stopped");
+            }
+            ctx.fillRect(x, y, 5, 5);
+            if (!stopAnimation) {
+                setTimeout(function () {
+                    requestId = window.requestAnimationFrame(draw)
+                }, 100);
+            }
+        }
+    </script>
+    <style type="text/css">
+        canvas {
+            border: 1px solid black;
+        }
+
+        .userInput {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="userInput">
+            <input id="velocity" type="text" placeholder="Enter the Velocity"></input>
+            <input id="angle" type="text" placeholder="Enter the projection angle"></input>
+            <input id="Launch" type="button" value="Launch" onclick="start();" />
+            <input id="Reset" type="button" value="Reset" onclick="reset();" />
+        </div>
+        <div class="representation">
+            <canvas id="canvas" width="1500" height="600"></canvas>
+        </div>
+        <div class="coordinates">
+            <p id="xAxis">Distance in X axis </p>
+            <p id="yAxis">Distance in Y axis </p>
+        </div>
+    </div>
+</body>
+
+</html>
