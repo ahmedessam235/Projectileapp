@@ -33,9 +33,9 @@
             var ctx = canvas.getContext('2d');
             x = x + 5;
             y = y - 5;
-            document.getElementById("xAxis").innerHTML = "Distance in X axis is " + x;
-            document.getElementById("yAxis").innerHTML = "Distance in X axis is " + y;
-            if ((x > 1495) || (y < 0)) {
+            document.getElementById("xAxis").innerHTML = "Distance in X Axis is " + x;
+            document.getElementById("yAxis").innerHTML = "Distance in Y Axis is " + y;
+            if ((x > 1495) || (y <= 0)) {
                 window.cancelAnimationFrame(requestId);
                 stopAnimation = true;
                 console.log("should have stopped");
