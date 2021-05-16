@@ -33,14 +33,17 @@
             var ctx = canvas.getContext('2d');
             x = x + 5;
             y = y - 5;
-            document.getElementById("xAxis").innerHTML ="Distance in X axis is " + x;
+            document.getElementById("xAxis").innerHTML = "Distance in X axis is " + x;
             document.getElementById("yAxis").innerHTML = "Distance in X axis is " + y;
             if ((x > 1495) || (y < 0)) {
                 window.cancelAnimationFrame(requestId);
                 stopAnimation = true;
                 console.log("should have stopped");
             }
-            ctx.fillRect(x, y, 5, 5);
+            // ctx.fillRect(x, y, 5, 5);
+            ctx.beginPath();
+            ctx.arc(x, y, 5, 0, 2 * Math.PI);
+            ctx.fill();
             if (!stopAnimation) {
                 setTimeout(function () {
                     requestId = window.requestAnimationFrame(draw)
