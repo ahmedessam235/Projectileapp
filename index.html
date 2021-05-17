@@ -14,28 +14,46 @@
         var Vx = 0;
         var Vy = 0;
         var firstTime = true;
+        var maxHeight = 0;
 
-        function calculateVelocity(speed, angleOfLaunch) {
-            var radians = angleOfLaunch * Math.PI /180; // convert to radians because cos and sin methods need the angle to be radians
+        function calculateStats(speed, angleOfLaunch) {
+            var distance = 0;
+            var radians = angleOfLaunch * Math.PI /
+                180; // convert to radians because cos and sin methods need the angle to be radians
             Vx = speed * Math.cos(radians);
             Vy = speed * Math.sin(radians);
+            distance = ((speed * speed) * Math.sin(2 * radians)) / G;
+            document.getElementById("xAxis").innerHTML = "Distance in X Axis is " + distance + " meters";
+            maxHeight = ((speed * speed) * (Math.sin(radians) * Math.sin(radians))) / (2 * G);
         }
 
         function start() {
-            velocity = document.getElementById('velocity').value;
+            if (firstTime){
+            velocity = document.getElementById('velocity').value; //TO DO handle user inputs
             angle = document.getElementById('angle').value;
-            calculateVelocity(velocity, angle);
+            calculateStats(velocity, angle);
             stopAnimation = false;
             draw();
+            } else {
+                reset();
+                velocity = document.getElementById('velocity').value; //TO DO handle user inputs
+            angle = document.getElementById('angle').value;
+            calculateStats(velocity, angle);
+            stopAnimation = false;
+            draw();
+
+            }
         }
-        function clearStats (){
+
+        function clearStats() {
             stopAnimation = true;
             velocity = 0;
             angle = 0;
             Vx = 0;
             Vy = 0;
-            firstTime = true; 
+            firstTime = true;
         }
+
         function reset() {
             x = 0;
             y = 600;
@@ -48,7 +66,7 @@
 
 
 
-        function draw() {
+        function draw() { //To Do change global variables to arguments passing
             var canvas = document.getElementById('canvas');
             var ctx = canvas.getContext('2d');
             Vy = Vy - G;
@@ -59,7 +77,6 @@
                 y = y - Vy;
             }
 
-            document.getElementById("xAxis").innerHTML = "Distance in X Axis is " + x;
             document.getElementById("yAxis").innerHTML = "Distance in Y Axis is " + y;
             ctx.beginPath();
             ctx.arc(x, y, 3, 0, 2 * Math.PI);
@@ -71,15 +88,12 @@
 
                 console.log("should have stopped");
             } else if (y > 600) {
-                ctx.beginPath();
-            ctx.arc(x, 600, 3, 0, 2 * Math.PI);
-            ctx.fill();
                 window.cancelAnimationFrame(requestId);
                 stopAnimation = true;
 
             }
             // ctx.fillRect(x, y, 5, 5);
-           
+
             if (!stopAnimation) {
                 setTimeout(function () {
                     requestId = window.requestAnimationFrame(draw)
