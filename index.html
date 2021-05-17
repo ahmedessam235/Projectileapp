@@ -8,15 +8,17 @@
         var y = 595;
         var requestId = 0;
         var stopAnimation = false;
-
+        var velocity = 0;
+        var angle = 0;
         function start() {
-            var velocity = document.getElementById('velocity').value;
-            var angle = document.getElementById('angle').value;
+             velocity = document.getElementById('velocity').value;
+             angle = document.getElementById('angle').value;
+            
             stopAnimation = false;
             draw();
         }
 
-        function reset() {
+        function reset() {           
             x = 0;
             y = 595;
             var canvas = document.getElementById('canvas');
@@ -29,6 +31,7 @@
 
 
         function draw() {
+            console.log(velocity);
             var canvas = document.getElementById('canvas');
             var ctx = canvas.getContext('2d');
             x = x + 5;
