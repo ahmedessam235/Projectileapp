@@ -4,8 +4,8 @@
 <head>
     <meta charset="utf-8" />
     <script type="application/javascript">
-        var x = 0;
-        var y = 600;
+        var x = 5;
+        var y = 595;
         var requestId = 0;
         var stopAnimation = false;
         var velocity = 0;
@@ -28,19 +28,19 @@
         }
 
         function start() {
-            if (firstTime){
-            velocity = document.getElementById('velocity').value; //TO DO handle user inputs
-            angle = document.getElementById('angle').value;
-            calculateStats(velocity, angle);
-            stopAnimation = false;
-            draw();
+            if (firstTime) {
+                velocity = document.getElementById('velocity').value; //TO DO handle user inputs
+                angle = document.getElementById('angle').value;
+                calculateStats(velocity, angle);
+                stopAnimation = false;
+                draw();
             } else {
                 reset();
                 velocity = document.getElementById('velocity').value; //TO DO handle user inputs
-            angle = document.getElementById('angle').value;
-            calculateStats(velocity, angle);
-            stopAnimation = false;
-            draw();
+                angle = document.getElementById('angle').value;
+                calculateStats(velocity, angle);
+                stopAnimation = false;
+                draw();
 
             }
         }
@@ -55,8 +55,8 @@
         }
 
         function reset() {
-            x = 0;
-            y = 600;
+            x = 5;
+            y = 595;
             var canvas = document.getElementById('canvas');
             var ctx = canvas.getContext('2d');
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -76,10 +76,11 @@
                 x = x + Vx;
                 y = y - Vy;
             }
-
+            console.log("Value of x  = ", x);
+            console.log("Value of y  = ", y);
             document.getElementById("yAxis").innerHTML = "Distance in Y Axis is " + y;
             ctx.beginPath();
-            ctx.arc(x, y, 3, 0, 2 * Math.PI);
+            ctx.arc(x, y, 5, 0, 2 * Math.PI);
             ctx.fill();
             if ((x > 1495) || (y <= 0)) {
                 window.cancelAnimationFrame(requestId);
@@ -92,8 +93,6 @@
                 stopAnimation = true;
 
             }
-            // ctx.fillRect(x, y, 5, 5);
-
             if (!stopAnimation) {
                 setTimeout(function () {
                     requestId = window.requestAnimationFrame(draw)
