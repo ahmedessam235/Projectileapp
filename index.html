@@ -5,47 +5,76 @@
     <meta charset="utf-8" />
     <script type="application/javascript">
         var x = 0;
-        var y = 595;
+        var y = 600;
         var requestId = 0;
         var stopAnimation = false;
         var velocity = 0;
         var angle = 0;
+        var G = 9.81; //acceleration due gravity
+        var Vx = 0;
+        var Vy = 0;
+        var firstTime = true;
+
+        function calculateVelocity(speed, angleOfLaunch) {
+            var radians = angleOfLaunch * Math.PI /180; // convert to radians because cos and sin methods need the angle to be radians
+            Vx = speed * Math.cos(radians);
+            Vy = speed * Math.sin(radians);
+        }
+
         function start() {
-             velocity = document.getElementById('velocity').value;
-             angle = document.getElementById('angle').value;
-            
+            velocity = document.getElementById('velocity').value;
+            angle = document.getElementById('angle').value;
+            calculateVelocity(velocity, angle);
             stopAnimation = false;
             draw();
         }
-
-        function reset() {           
+        function clearStats (){
+            stopAnimation = true;
+            velocity = 0;
+            angle = 0;
+            Vx = 0;
+            Vy = 0;
+            firstTime = true; 
+        }
+        function reset() {
             x = 0;
-            y = 595;
+            y = 600;
             var canvas = document.getElementById('canvas');
             var ctx = canvas.getContext('2d');
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             window.cancelAnimationFrame(requestId);
-            stopAnimation = true;
+            clearStats();
         }
 
 
 
         function draw() {
-            console.log(velocity);
             var canvas = document.getElementById('canvas');
             var ctx = canvas.getContext('2d');
-            x = x + 5;
-            y = y - 5;
+            Vy = Vy - G;
+            if (firstTime) {
+                firstTime = false;
+            } else {
+                x = x + Vx;
+                y = y - Vy;
+            }
+
             document.getElementById("xAxis").innerHTML = "Distance in X Axis is " + x;
             document.getElementById("yAxis").innerHTML = "Distance in Y Axis is " + y;
             if ((x > 1495) || (y <= 0)) {
                 window.cancelAnimationFrame(requestId);
                 stopAnimation = true;
+                firstTime = true;
+
                 console.log("should have stopped");
+            } else if (y > 600) {
+                window.cancelAnimationFrame(requestId);
+                stopAnimation = true;
+
             }
             // ctx.fillRect(x, y, 5, 5);
             ctx.beginPath();
-            ctx.arc(x, y, 5, 0, 2 * Math.PI);
+            ctx.arc(x, y, 3, 0, 2 * Math.PI);
             ctx.fill();
             if (!stopAnimation) {
                 setTimeout(function () {
