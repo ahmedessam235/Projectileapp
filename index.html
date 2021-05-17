@@ -61,6 +61,9 @@
 
             document.getElementById("xAxis").innerHTML = "Distance in X Axis is " + x;
             document.getElementById("yAxis").innerHTML = "Distance in Y Axis is " + y;
+            ctx.beginPath();
+            ctx.arc(x, y, 3, 0, 2 * Math.PI);
+            ctx.fill();
             if ((x > 1495) || (y <= 0)) {
                 window.cancelAnimationFrame(requestId);
                 stopAnimation = true;
@@ -68,14 +71,15 @@
 
                 console.log("should have stopped");
             } else if (y > 600) {
+                ctx.beginPath();
+            ctx.arc(x, 600, 3, 0, 2 * Math.PI);
+            ctx.fill();
                 window.cancelAnimationFrame(requestId);
                 stopAnimation = true;
 
             }
             // ctx.fillRect(x, y, 5, 5);
-            ctx.beginPath();
-            ctx.arc(x, y, 3, 0, 2 * Math.PI);
-            ctx.fill();
+           
             if (!stopAnimation) {
                 setTimeout(function () {
                     requestId = window.requestAnimationFrame(draw)
