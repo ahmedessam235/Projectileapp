@@ -3,6 +3,35 @@
 
 <head>
     <meta charset="utf-8" />
+
+    <style type="text/css">
+        canvas {
+            border: 1px solid black;
+        }
+
+        .userInput {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="userInput">
+            <input id="velocity" type="text" placeholder="Enter the Velocity"></input>
+            <input id="angle" type="text" placeholder="Enter the projection angle"></input>
+            <input id="Launch" type="button" value="Launch" onclick="start();" />
+            <input id="Reset" type="button" value="Reset" onclick="reset();" />
+        </div>
+        <div class="representation">
+            <canvas id="canvas" width="1500" height="600"></canvas>
+        </div>
+        <div class="coordinates">
+            <p id="xAxis">Distance in X axis </p>
+            <p id="yAxis">Distance in Y axis </p>
+            <p id="maximumHeight">Distance in Y axis </p>
+        </div>
+    </div>
     <script type="application/javascript">
         var x = 5;
         var y = 595;
@@ -24,10 +53,11 @@
                 180; // convert to radians because cos and sin methods need the angle to be radians
             Vx = speed * Math.cos(radians);
             Vy = speed * Math.sin(radians);
-            distance = ((speed * speed) * Math.sin(2 * radians)) / G;
+            distance = ((speed * speed) * Math.sin(2 * radians)) / G; // caluclating real horiztonal distance
             document.getElementById("xAxis").innerHTML = "Distance in X Axis is " + distance + " meters";
-            maxHeight = ((speed * speed) * (Math.sin(radians) * Math.sin(radians))) / (2 * G);
-            console.log(maxHeight);
+            maxHeight = ((speed * speed) * (Math.sin(radians) * Math.sin(radians))) / (2 *
+            G); // calculating the maximum height.
+            document.getElementById("maximumHeight").innerHTML = "Maximum Height  is " + maxHeight + " meters";
         }
 
         function start() {
@@ -69,7 +99,8 @@
 
 
         function calculateLastPoint() {
-            finalPoint = (((600 - yOld) / (y - yOld)) * (x - xOld)) + xOld;
+            finalPoint = (((600 - yOld) / (y - yOld)) * (x - xOld)) +
+            xOld; // when Y value exceed the border this function is used to get the point between the oldest and the newest to get the x - axis point
             return finalPoint;
         }
 
@@ -98,13 +129,13 @@
                 console.log("should have stopped");
 
             } else if (y > 600) {
-                if ( yOld<594){
-                var finalPoint = 0;
-                finalPoint = calculateLastPoint();
-                ctx.beginPath();
-                ctx.arc(finalPoint, 600, 5, 0, 2 * Math.PI);
-                ctx.fill();
-            }
+                if (yOld < 590) {
+                    var finalPoint = 0;
+                    finalPoint = calculateLastPoint();
+                    ctx.beginPath();
+                    ctx.arc(finalPoint, 600, 5, 0, 2 * Math.PI);
+                    ctx.fill();
+                }
                 window.cancelAnimationFrame(requestId);
                 stopAnimation = true;
 
@@ -118,33 +149,6 @@
             }
         }
     </script>
-    <style type="text/css">
-        canvas {
-            border: 1px solid black;
-        }
-
-        .userInput {
-            margin-bottom: 10px;
-        }
-    </style>
-</head>
-
-<body>
-    <div class="container">
-        <div class="userInput">
-            <input id="velocity" type="text" placeholder="Enter the Velocity"></input>
-            <input id="angle" type="text" placeholder="Enter the projection angle"></input>
-            <input id="Launch" type="button" value="Launch" onclick="start();" />
-            <input id="Reset" type="button" value="Reset" onclick="reset();" />
-        </div>
-        <div class="representation">
-            <canvas id="canvas" width="1500" height="600"></canvas>
-        </div>
-        <div class="coordinates">
-            <p id="xAxis">Distance in X axis </p>
-            <p id="yAxis">Distance in Y axis </p>
-        </div>
-    </div>
 </body>
 
 </html>
