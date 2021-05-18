@@ -15,6 +15,8 @@
         var Vy = 0;
         var firstTime = true;
         var maxHeight = 0;
+        var xOld = 0;
+        var yOld = 0;
 
         function calculateStats(speed, angleOfLaunch) {
             var distance = 0;
@@ -25,6 +27,7 @@
             distance = ((speed * speed) * Math.sin(2 * radians)) / G;
             document.getElementById("xAxis").innerHTML = "Distance in X Axis is " + distance + " meters";
             maxHeight = ((speed * speed) * (Math.sin(radians) * Math.sin(radians))) / (2 * G);
+            console.log(maxHeight);
         }
 
         function start() {
@@ -65,6 +68,10 @@
         }
 
 
+        function calculateLastPoint() {
+            finalPoint = (((600 - yOld) / (y - yOld)) * (x - xOld)) + xOld;
+            return finalPoint;
+        }
 
         function draw() { //To Do change global variables to arguments passing
             var canvas = document.getElementById('canvas');
@@ -82,17 +89,28 @@
             ctx.beginPath();
             ctx.arc(x, y, 5, 0, 2 * Math.PI);
             ctx.fill();
+
             if ((x > 1495) || (y <= 0)) {
                 window.cancelAnimationFrame(requestId);
                 stopAnimation = true;
                 firstTime = true;
 
                 console.log("should have stopped");
+
             } else if (y > 600) {
+                if ( yOld<594){
+                var finalPoint = 0;
+                finalPoint = calculateLastPoint();
+                ctx.beginPath();
+                ctx.arc(finalPoint, 600, 5, 0, 2 * Math.PI);
+                ctx.fill();
+            }
                 window.cancelAnimationFrame(requestId);
                 stopAnimation = true;
 
             }
+            xOld = x;
+            yOld = y;
             if (!stopAnimation) {
                 setTimeout(function () {
                     requestId = window.requestAnimationFrame(draw)
