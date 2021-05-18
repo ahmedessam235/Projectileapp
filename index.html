@@ -3,8 +3,14 @@
 
 <head>
     <meta charset="utf-8" />
-
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <style type="text/css">
+        @media (min-width: 1200px) {
+            .container {
+                float: left;
+            }
+        }
+
         canvas {
             border: 1px solid black;
         }
@@ -18,7 +24,9 @@
 <body>
     <div class="container">
         <div class="userInput">
+            <label>Velocity : </label>
             <input id="velocity" type="text" placeholder="Enter the Velocity"></input>
+            <label>Angle :</label>
             <input id="angle" type="text" placeholder="Enter the projection angle"></input>
             <input id="Launch" type="button" value="Launch" onclick="start();" />
             <input id="Reset" type="button" value="Reset" onclick="reset();" />
@@ -26,7 +34,7 @@
         <div class="representation">
             <canvas id="canvas" width="1500" height="600"></canvas>
         </div>
-        <div class="coordinates">
+        <div class="Readings">
             <p id="xAxis">Distance in X axis </p>
             <p id="yAxis">Distance in Y axis </p>
             <p id="maximumHeight">Distance in Y axis </p>
@@ -39,13 +47,14 @@
         var stopAnimation = false;
         var velocity = 0;
         var angle = 0;
-        var G = 9.81; //acceleration due gravity
-        var Vx = 0;
+        const G = 9.81; //acceleration due gravity
+        var Vx = 0; // ToDO change naming convention
         var Vy = 0;
         var firstTime = true;
         var maxHeight = 0;
         var xOld = 0;
         var yOld = 0;
+        var time = 0;
 
         function calculateStats(speed, angleOfLaunch) {
             var distance = 0;
@@ -54,13 +63,14 @@
             Vx = speed * Math.cos(radians);
             Vy = speed * Math.sin(radians);
             distance = ((speed * speed) * Math.sin(2 * radians)) / G; // caluclating real horiztonal distance
-            document.getElementById("xAxis").innerHTML = "Distance in X Axis is " + distance + " meters";
+            document.getElementById("xAxis").innerHTML = "Distance in X Axis is : " + distance + " meters";
             maxHeight = ((speed * speed) * (Math.sin(radians) * Math.sin(radians))) / (2 *
-            G); // calculating the maximum height.
-            document.getElementById("maximumHeight").innerHTML = "Maximum Height  is " + maxHeight + " meters";
+                G); // calculating the maximum height.
+            document.getElementById("maximumHeight").innerHTML = "Maximum Height  is : " + maxHeight + " meters";
         }
 
         function start() {
+            reset();
             if (firstTime) {
                 velocity = document.getElementById('velocity').value; //TO DO handle user inputs
                 angle = document.getElementById('angle').value;
@@ -85,6 +95,7 @@
             Vx = 0;
             Vy = 0;
             firstTime = true;
+            time = 0;
         }
 
         function reset() {
@@ -100,11 +111,21 @@
 
         function calculateLastPoint() {
             finalPoint = (((600 - yOld) / (y - yOld)) * (x - xOld)) +
-            xOld; // when Y value exceed the border this function is used to get the point between the oldest and the newest to get the x - axis point
+                xOld; // when Y value exceed the border this function is used to get the point between the oldest and the newest to get the x - axis point
             return finalPoint;
         }
 
+        function calculateVerticalDisplacemnt(time) {
+            var yDisplacement = (Vy * time) + (0.5 * G * (time * time));
+            if (yDisplacement <= 0) {
+                yDisplacement = 0;
+            }
+            document.getElementById("yAxis").innerHTML = "Distance in Y Axis is : " + yDisplacement + " meters";
+
+        }
+
         function draw() { //To Do change global variables to arguments passing
+
             var canvas = document.getElementById('canvas');
             var ctx = canvas.getContext('2d');
             Vy = Vy - G;
@@ -116,19 +137,19 @@
             }
             console.log("Value of x  = ", x);
             console.log("Value of y  = ", y);
-            document.getElementById("yAxis").innerHTML = "Distance in Y Axis is " + y;
+            time++;
+            calculateVerticalDisplacemnt(time);
             ctx.beginPath();
             ctx.arc(x, y, 5, 0, 2 * Math.PI);
             ctx.fill();
 
             if ((x > 1495) || (y <= 0)) {
-                window.cancelAnimationFrame(requestId);
+                window.cancelAnimationFrame(requestId); //TODO fiz the issue of out of boundries
                 stopAnimation = true;
                 firstTime = true;
 
-                console.log("should have stopped");
-
             } else if (y > 600) {
+                calculateVerticalDisplacemnt(0);
                 if (yOld < 590) {
                     var finalPoint = 0;
                     finalPoint = calculateLastPoint();
