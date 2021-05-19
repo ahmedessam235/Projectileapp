@@ -32,6 +32,7 @@
 
             margin-bottom: 10px;
             margin-top: 5px;
+            margin-left: 40px;
         }
        h1 {
            text-align: left;
@@ -40,10 +41,29 @@
 
        }
         .coordinates {
-            text-align: center;
-            margin-left: 400px;
+            text-align: left;
+            margin-left: 0px;
             margin-top: 20px;
         }
+        .resultHeading {
+            margin-top: 15px;
+margin-left: 40px;
+        }
+        .Readings {
+            display: flex;
+            flex-direction: column;
+        }
+        .readingsfooter{
+            display:flex;
+            flex-direction: column;
+            border: 1px solid black;
+            margin-left: 40px;
+            background-color:#007bff ;
+            color: white;
+            width:450px;
+            margin-bottom: 20px;
+        }
+ 
     </style>
 </head>
 
@@ -57,6 +77,7 @@
             <input id="angle"  class ="input-medium"type="number"   placeholder="Enter the projection angle"></input>
             <input id="Launch"class="btn btn-primary" type="button"   value="Launch" onclick="start();" />
             <input id="Reset" class="btn btn-primary" type="button" value="Reset" onclick="reset();" />
+            <p style="font-size: small;">bla bla bla</p>
             <p class="coordinates">Maximum height = 600 meters, Maximum width = 1500 meters</p>
             
         </div>
@@ -66,9 +87,12 @@
         
       
         <div class="Readings">
-            <p id="xAxis">Distance in X axis </p>
-            <p id="yAxis">Distance in Y axis </p>
-            <p id="maximumHeight">Maximum height  </p>
+            <div><h2 class="resultHeading">Results : </h2></div>
+            <div class="readingsfooter">
+                <p id="xAxis" class="font-weight-bold" style="padding-left: 5px;">Distance in X axis :</p>
+                <p id="yAxis" class="font-weight-bold" style="padding-left: 5px;">Distance in Y axis :</p>
+                <p id="maximumHeight" class="font-weight-bold" style="padding-left: 5px;">Maximum height : </p></div>
+            
         </div>
     </div>
     <script type="application/javascript">
