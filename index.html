@@ -2,21 +2,47 @@
 <html>
 
 <head>
-    <meta charset="utf-8" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <style type="text/css">
-        @media (min-width: 1200px) {
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+   
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+   <style type="text/css">
+ 
+            @media (min-width: 1200px) {
+                .container {
+                    float: left;
+                }
+            } 
             .container {
-                float: left;
+                color: #007bff;
             }
+        .representation {
+            display: block;
+    margin: 0 auto;
         }
-
         canvas {
             border: 1px solid black;
+            margin-left: 40px;
+            margin-right: 50px;
         }
 
         .userInput {
+
             margin-bottom: 10px;
+            margin-top: 5px;
+        }
+       h1 {
+           text-align: left;
+           margin-bottom: 17px;
+           color: #007bff;
+
+       }
+        .coordinates {
+            text-align: center;
+            margin-left: 400px;
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -24,20 +50,25 @@
 <body>
     <div class="container">
         <div class="userInput">
+            <h1>Projectile Simulator</h1>
             <label>Velocity : </label>
-            <input id="velocity" type="text" placeholder="Enter the Velocity"></input>
+            <input id="velocity" min="0"  type="number" placeholder="Enter the Velocity"></input>
             <label>Angle :</label>
-            <input id="angle" type="text" placeholder="Enter the projection angle"></input>
-            <input id="Launch" type="button" value="Launch" onclick="start();" />
-            <input id="Reset" type="button" value="Reset" onclick="reset();" />
+            <input id="angle"  class ="input-medium"type="number"   placeholder="Enter the projection angle"></input>
+            <input id="Launch"class="btn btn-primary" type="button"   value="Launch" onclick="start();" />
+            <input id="Reset" class="btn btn-primary" type="button" value="Reset" onclick="reset();" />
+            <p class="coordinates">Maximum height = 600 meters, Maximum width = 1500 meters</p>
+            
         </div>
-        <div class="representation">
-            <canvas id="canvas" width="1500" height="600"></canvas>
+        <div class="representation ">
+            <canvas id="canvas" width="1400" height="600" ></canvas>
         </div>
+        
+      
         <div class="Readings">
             <p id="xAxis">Distance in X axis </p>
             <p id="yAxis">Distance in Y axis </p>
-            <p id="maximumHeight">Distance in Y axis </p>
+            <p id="maximumHeight">Maximum height  </p>
         </div>
     </div>
     <script type="application/javascript">
@@ -129,6 +160,8 @@
             var canvas = document.getElementById('canvas');
             var ctx = canvas.getContext('2d');
             Vy = Vy - G;
+            ctx.font = "30px Arial";
+           ctx.fillText("Hello World",5,0);
             if (firstTime) {
                 firstTime = false;
             } else {
@@ -140,10 +173,11 @@
             time++;
             calculateVerticalDisplacemnt(time);
             ctx.beginPath();
+            ctx.fillStyle = "#007bff";
             ctx.arc(x, y, 5, 0, 2 * Math.PI);
             ctx.fill();
 
-            if ((x > 1495) || (y <= 0)) {
+            if ((x > 1395) || (y <= 0)) {
                 window.cancelAnimationFrame(requestId); //TODO fiz the issue of out of boundries
                 stopAnimation = true;
                 firstTime = true;
@@ -154,7 +188,9 @@
                     var finalPoint = 0;
                     finalPoint = calculateLastPoint();
                     ctx.beginPath();
+                    context.fillStyle = "#007bff";
                     ctx.arc(finalPoint, 600, 5, 0, 2 * Math.PI);
+                    
                     ctx.fill();
                 }
                 window.cancelAnimationFrame(requestId);
