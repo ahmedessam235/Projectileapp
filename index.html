@@ -95,7 +95,7 @@
             <input id="Reset" class="btn btn-primary" type="button" value="Reset" onclick="reset();" />
             <p class="note">*Note: use higher values because of the scale, values of velocity below 30 ms/s and angle
                 below 30 are not visible *</p>
-            <p class="coordinates">Maximum height = 600 meters, Maximum width = 1500 meters</p>
+            <p class="coordinates">Maximum height = 600 meters, Maximum width = 1400 meters</p>
 
         </div>
         <div class="representation ">
@@ -130,7 +130,8 @@
         var xOld = 0;
         var yOld = 0;
         var time = 0;
-
+        var width = 0;
+        var height = 0;
         function calculateStats(speed, angleOfLaunch) {
             var distance = 0;
             var radians = angleOfLaunch * Math.PI /
@@ -163,7 +164,7 @@
             }
         }
 
-        function clearStats() {
+        function clearStats() {   //clearfunction to prepare the new request.
             stopAnimation = true;
             velocity = 0;
             angle = 0;
@@ -204,8 +205,8 @@
             var canvas = document.getElementById('canvas');
             var ctx = canvas.getContext('2d');
             Vy = Vy - G;
-            ctx.font = "30px Arial";
-            ctx.fillText("Hello World", 5, 0);
+            var width = canvas.width;
+            var height = canvas.height;
             if (firstTime) {
                 firstTime = false;
             } else {
@@ -219,20 +220,19 @@
             ctx.arc(x, y, 5, 0, 2 * Math.PI);
             ctx.fill();
 
-            if ((x > 1395) || (y <= 0)) {
+            if ((x > width-5) || (y <= 0)) {  //boundry check to stop animation
                 window.cancelAnimationFrame(requestId); 
                 stopAnimation = true;
                 firstTime = true;
 
-            } else if (y > 600) {
+            } else if (y > height) {
                 calculateVerticalDisplacemnt(0);
-                if (yOld < 590) {
+                if (yOld < height - 10) {  //handling last point drawing to avoid repainting on the same point.
                     var finalPoint = 0;
-                    finalPoint = calculateLastPoint();
+                    finalPoint = calculateLastPoint(); 
                     ctx.beginPath();
-                    context.fillStyle = "#007bff";
-                    ctx.arc(finalPoint, 600, 5, 0, 2 * Math.PI);
-
+                    ctx.fillStyle = "#007bff";
+                    ctx.arc(finalPoint, height, 5, 0, 2 * Math.PI);
                     ctx.fill();
                 }
                 window.cancelAnimationFrame(requestId);
