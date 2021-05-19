@@ -4,24 +4,36 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-   
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
-   <style type="text/css">
- 
-            @media (min-width: 1200px) {
-                .container {
-                    float: left;
-                }
-            } 
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+        integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous">
+    </script>
+    <style type="text/css">
+        @media (min-width: 1200px) {
             .container {
-                color: #007bff;
+                float: left;
             }
+        }
+
+        .container {
+            color: #007bff;
+        }
+
         .representation {
             display: block;
-    margin: 0 auto;
+            margin: 0 auto;
         }
+
+        .note {
+            font-size: small;
+            margin-top: 20px;
+        }
+
         canvas {
             border: 1px solid black;
             margin-left: 40px;
@@ -34,36 +46,40 @@
             margin-top: 5px;
             margin-left: 40px;
         }
-       h1 {
-           text-align: left;
-           margin-bottom: 17px;
-           color: #007bff;
 
-       }
+        h1 {
+            text-align: left;
+            margin-bottom: 17px;
+            color: #007bff;
+
+        }
+
         .coordinates {
             text-align: left;
             margin-left: 0px;
             margin-top: 20px;
         }
+
         .resultHeading {
             margin-top: 15px;
-margin-left: 40px;
+            margin-left: 40px;
         }
+
         .Readings {
             display: flex;
             flex-direction: column;
         }
-        .readingsfooter{
-            display:flex;
+
+        .readingsfooter {
+            display: flex;
             flex-direction: column;
             border: 1px solid black;
             margin-left: 40px;
-            background-color:#007bff ;
+            background-color: #007bff;
             color: white;
-            width:450px;
+            width: 450px;
             margin-bottom: 20px;
         }
- 
     </style>
 </head>
 
@@ -72,27 +88,31 @@ margin-left: 40px;
         <div class="userInput">
             <h1>Projectile Simulator</h1>
             <label>Velocity : </label>
-            <input id="velocity" min="0"  type="number" placeholder="Enter the Velocity"></input>
+            <input id="velocity" min="0" type="number" placeholder="Enter the Velocity"></input>
             <label>Angle :</label>
-            <input id="angle"  class ="input-medium"type="number"   placeholder="Enter the projection angle"></input>
-            <input id="Launch"class="btn btn-primary" type="button"   value="Launch" onclick="start();" />
+            <input id="angle" class="input-medium" type="number" placeholder="Enter the angle of projection"></input>
+            <input id="Launch" class="btn btn-primary" type="button" value="Launch" onclick="start();" />
             <input id="Reset" class="btn btn-primary" type="button" value="Reset" onclick="reset();" />
-            <p style="font-size: small;">bla bla bla</p>
+            <p class="note">*Note: use higher values because of the scale, values of velocity below 30 ms/s and angle
+                below 30 are not visible *</p>
             <p class="coordinates">Maximum height = 600 meters, Maximum width = 1500 meters</p>
-            
+
         </div>
         <div class="representation ">
-            <canvas id="canvas" width="1400" height="600" ></canvas>
+            <canvas id="canvas" width="1400" height="600"></canvas>
         </div>
-        
-      
+
+
         <div class="Readings">
-            <div><h2 class="resultHeading">Results : </h2></div>
+            <div>
+                <h2 class="resultHeading">Results : </h2>
+            </div>
             <div class="readingsfooter">
                 <p id="xAxis" class="font-weight-bold" style="padding-left: 5px;">Distance in X axis :</p>
                 <p id="yAxis" class="font-weight-bold" style="padding-left: 5px;">Distance in Y axis :</p>
-                <p id="maximumHeight" class="font-weight-bold" style="padding-left: 5px;">Maximum height : </p></div>
-            
+                <p id="maximumHeight" class="font-weight-bold" style="padding-left: 5px;">Maximum height : </p>
+            </div>
+
         </div>
     </div>
     <script type="application/javascript">
@@ -103,7 +123,7 @@ margin-left: 40px;
         var velocity = 0;
         var angle = 0;
         const G = 9.81; //acceleration due gravity
-        var Vx = 0; // ToDO change naming convention
+        var Vx = 0; 
         var Vy = 0;
         var firstTime = true;
         var maxHeight = 0;
@@ -127,14 +147,14 @@ margin-left: 40px;
         function start() {
             reset();
             if (firstTime) {
-                velocity = document.getElementById('velocity').value; //TO DO handle user inputs
+                velocity = document.getElementById('velocity').value;
                 angle = document.getElementById('angle').value;
                 calculateStats(velocity, angle);
                 stopAnimation = false;
                 draw();
             } else {
                 reset();
-                velocity = document.getElementById('velocity').value; //TO DO handle user inputs
+                velocity = document.getElementById('velocity').value; 
                 angle = document.getElementById('angle').value;
                 calculateStats(velocity, angle);
                 stopAnimation = false;
@@ -179,21 +199,19 @@ margin-left: 40px;
 
         }
 
-        function draw() { //To Do change global variables to arguments passing
+        function draw() {
 
             var canvas = document.getElementById('canvas');
             var ctx = canvas.getContext('2d');
             Vy = Vy - G;
             ctx.font = "30px Arial";
-           ctx.fillText("Hello World",5,0);
+            ctx.fillText("Hello World", 5, 0);
             if (firstTime) {
                 firstTime = false;
             } else {
                 x = x + Vx;
                 y = y - Vy;
             }
-            console.log("Value of x  = ", x);
-            console.log("Value of y  = ", y);
             time++;
             calculateVerticalDisplacemnt(time);
             ctx.beginPath();
@@ -202,7 +220,7 @@ margin-left: 40px;
             ctx.fill();
 
             if ((x > 1395) || (y <= 0)) {
-                window.cancelAnimationFrame(requestId); //TODO fiz the issue of out of boundries
+                window.cancelAnimationFrame(requestId); 
                 stopAnimation = true;
                 firstTime = true;
 
@@ -214,7 +232,7 @@ margin-left: 40px;
                     ctx.beginPath();
                     context.fillStyle = "#007bff";
                     ctx.arc(finalPoint, 600, 5, 0, 2 * Math.PI);
-                    
+
                     ctx.fill();
                 }
                 window.cancelAnimationFrame(requestId);
